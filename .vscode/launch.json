@@ -14,8 +14,8 @@
             "cwd": "${workspaceFolder}/CarvedRock.Api",
             "stopAtEntry": false,
             "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"            
+                "action": "openExternally",                
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "launchBrowser": {
                 "enabled": true,
@@ -23,6 +23,10 @@
                 "windows": {
                     "command": "cmd.exe",
                     "args": "/C start ${auto-detect-url}/swagger"
+                },
+                "osx": {
+                    "command": "open",
+                    "args": "${auto-detect-url}/swagger"
                 }
             },
             "env": {
