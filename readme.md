@@ -1,5 +1,7 @@
 # Logging and Monitoring in ASP.NET Core 6
 
+Repo URL: https://github.com/dahlsailrunner/logging-monitoring-aspnet6
+
 ## VS Code Setup
 
 The `C#` extension is required to use this repo.  I have some other settings that you may be curious about
