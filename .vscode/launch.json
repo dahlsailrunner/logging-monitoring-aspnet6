@@ -16,19 +16,7 @@
             "serverReadyAction": {
                 "action": "openExternally",                
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
-            "launchBrowser": {
-                "enabled": true,
-                "args": "${auto-detect-url}/swagger",
-                "windows": {
-                    "command": "cmd.exe",
-                    "args": "/C start ${auto-detect-url}/swagger"
-                },
-                "osx": {
-                    "command": "open",
-                    "args": "${auto-detect-url}/swagger"
-                }
-            },
+            },           
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
