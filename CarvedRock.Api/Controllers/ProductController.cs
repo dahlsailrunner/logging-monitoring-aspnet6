@@ -31,11 +31,13 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> Get(int id)
     {
         //var product = await _productLogic.GetProductByIdAsync(id);
+        _logger.LogDebug("Getting single product in API for {id}", id);
         var product = _productLogic.GetProductById(id);
         if (product != null)
         {
             return Ok(product);
         }
+        _logger.LogWarning("No product found for ID: {id}", id);
         return NotFound();
     }
 }

@@ -1,7 +1,14 @@
+using System.Diagnostics;
 using CarvedRock.Data;
 using CarvedRock.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
+//builder.Logging.AddFilter("CarvedRock", LogLevel.Debug);
+
+// var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+// var tracePath = Path.Join(path, $"Log_CarvedRock_{DateTime.Now.ToString("yyyyMMdd-HHmm")}.txt");        
+// Trace.Listeners.Add(new TextWriterTraceListener(System.IO.File.CreateText(tracePath)));
+// Trace.AutoFlush = true;	
 
 // Services
 builder.Services.AddControllers();

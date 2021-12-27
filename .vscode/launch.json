@@ -19,6 +19,7 @@
             },           
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
+                //"Logging__LogLevel__CarvedRock.Api.Controllers": "Debug"                
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
