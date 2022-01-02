@@ -5,13 +5,34 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": "API - .NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-api",
             "program": "${workspaceFolder}/CarvedRock.Api/bin/Debug/net6.0/CarvedRock.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/CarvedRock.Api",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",                
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },           
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+                //"Logging__LogLevel__CarvedRock.Api.Controllers": "Debug"                
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "UI - .NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-ui",
+            "program": "${workspaceFolder}/CarvedRock.WebApp/bin/Debug/net6.0/CarvedRock.WebApp.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/CarvedRock.WebApp",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",                
