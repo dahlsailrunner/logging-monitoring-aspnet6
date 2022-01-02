@@ -1,0 +1,32 @@
+﻿@page
+@model CarvedRock.WebApp.Pages.ListingModel
+@{}
+
+<h1>@Model.CategoryName</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th class="d-flex justify-content-center">Description</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var product in Model.Products) {
+        <tr>
+            <td>
+                <img src="@product.ImgUrl" alt="@product.Name" height="100" width="100"/>
+                <br/>
+                @Html.DisplayFor(modelItem => product.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => product.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => product.Price)               
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
