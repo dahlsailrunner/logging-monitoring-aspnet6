@@ -11,10 +11,28 @@
 {
     <p>
         <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        <br />
+        <strong>HTTP TraceId:</strong> <code>@Model.TraceId</code>
+        <br />
+        <strong>Activity.Id:</strong> <code>@Model.CurrentActivity?.Id</code>
+        <br />
+        <strong>Activity.SpanId:</strong> <code>@Model.CurrentActivity?.SpanId</code>
+        <br />
+        <strong>Activity.TraceId:</strong> <code>@Model.CurrentActivity?.TraceId</code>
+        <br />        
+        <strong>Activity.Parent:</strong> <code>@Model.CurrentActivity?.Parent</code>
+        <br />
+        <strong>Activity.ParentId:</strong> <code>@Model.CurrentActivity?.ParentId</code>
+        <br />
+        <strong>Activity.ParentSpanId:</strong> <code>@Model.CurrentActivity?.ParentSpanId</code>
+        <br />
+        <strong>Activity.RootId:</strong> <code>@Model.CurrentActivity?.RootId</code>
+        <br />
+        <strong>Activity.Kind:</strong> <code>@Model.CurrentActivity?.Kind</code>
     </p>
 }
 
-<h3>Development Mode</h3>
+@* <h3>Development Mode</h3>
 <p>
     Swapping to the <strong>Development</strong> environment displays detailed information about the error that occurred.
 </p>
@@ -23,4 +41,4 @@
     It can result in displaying sensitive information from exceptions to end users.
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
-</p>
+</p> *@

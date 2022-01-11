@@ -1,8 +1,24 @@
 using System.Diagnostics;
 using CarvedRock.Data;
 using CarvedRock.Domain;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.Data.Sqlite;
+using CarvedRock.Api;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddProblemDetails(opts => 
+{
+    opts.IncludeExceptionDetails = (ctx, ex) => false;
+    
+    opts.OnBeforeWriteDetails = (ctx, dtls) => {
+        if (dtls.Status == 500)
+        {
+            dtls.Detail = "An error occurred in our API. Use the trace id when contacting us.";
+        }
+    }; 
+    opts.Rethrow<SqliteException>(); 
+    opts.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
+});
 //builder.Logging.AddFilter("CarvedRock", LogLevel.Debug);
 
 // var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -22,6 +38,9 @@ builder.Services.AddDbContext<LocalContext>();
 builder.Services.AddScoped<ICarvedRockRepository, CarvedRockRepository>();
 
 var app = builder.Build();
+
+app.UseMiddleware<CriticalExceptionMiddleware>();
+app.UseProblemDetails();
 
 using (var scope = app.Services.CreateScope())
 {
