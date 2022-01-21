@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using CarvedRock.WebApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddAuthentication(options =>
     options.SaveTokens = true;
 });
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
 
@@ -43,6 +45,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
+app.UseMiddleware<UserScopeMiddleware>();
 app.UseAuthorization();
 
 app.MapRazorPages().RequireAuthorization();

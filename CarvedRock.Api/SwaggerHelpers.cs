@@ -46,7 +46,11 @@ public class SwaggerOptions : IConfigureOptions<SwaggerGenOptions>
                 {
                     new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                        Reference = new OpenApiReference 
+                        { 
+                            Type = ReferenceType.SecurityScheme, 
+                            Id = "oauth2" 
+                        }
                     },
                     oauthScopes.Keys.ToArray()
                 }
@@ -54,7 +58,7 @@ public class SwaggerOptions : IConfigureOptions<SwaggerGenOptions>
         }
         catch (Exception ex)
         {
-            _logger.LogWarning("Error loading discovery document for Swagger UI");
+            _logger.LogWarning(ex, "Error loading discovery document for Swagger UI");
         }
     }
     

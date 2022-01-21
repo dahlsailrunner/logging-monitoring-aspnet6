@@ -15,7 +15,7 @@ public class ProductLogic : IProductLogic
         _repo = repo;
     }
     public async Task<IEnumerable<Product>> GetProductsForCategoryAsync(string category)
-    {
+    {        
         _logger.LogInformation("Getting products in logic for {category}", category);
 
         return await _repo.GetProductsAsync(category);

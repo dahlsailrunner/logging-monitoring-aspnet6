@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CarvedRock.WebApp.Pages
 {
-    public class ListingModel : PageModel
+    public partial class ListingModel : PageModel
     {
         private readonly HttpClient _apiClient;
         private readonly ILogger<ListingModel> _logger;
         private readonly HttpContext? _httpCtx;
 
-        public ListingModel(HttpClient apiClient, ILogger<ListingModel> logger, IHttpContextAccessor httpContextAccessor)
+        public ListingModel(HttpClient apiClient, ILogger<ListingModel> logger, 
+                IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _apiClient = apiClient;
@@ -20,9 +21,11 @@ namespace CarvedRock.WebApp.Pages
             _httpCtx = httpContextAccessor.HttpContext;
         }
 
-        public List<Product> Products { get; set; }
+        public List<Product> Products { get; set; } = new List<Product>();
         public string CategoryName { get; set; } = "";
 
+        [LoggerMessage(0, LogLevel.Warning, "API failure: {fullPath} Response: {statusCode}, Trace: {traceId}")]
+        partial void LogApiFailure(string fullPath, int statusCode, string traceId);
         public async Task OnGetAsync()
         {
             var cat = Request.Query["cat"].ToString();
@@ -34,7 +37,8 @@ namespace CarvedRock.WebApp.Pages
             if (_httpCtx != null)
             {
                 var accessToken = await _httpCtx.GetTokenAsync("access_token");
-                _apiClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                _apiClient.DefaultRequestHeaders.Authorization = 
+                                new AuthenticationHeaderValue("Bearer", accessToken);
                 // for a better way to include and manage access tokens for API calls:
                 // https://identitymodel.readthedocs.io/en/latest/aspnetcore/web.html
             }
@@ -49,8 +53,11 @@ namespace CarvedRock.WebApp.Pages
                   new ProblemDetails();
                 var traceId = details.Extensions["traceId"]?.ToString();
 
-                _logger.LogWarning("API failure: {fullPath} Response: {response}, Trace: {trace}",
-                  fullPath, (int) response.StatusCode, traceId);        
+                LogApiFailure(fullPath, (int) response.StatusCode, traceId ?? "");
+               
+                //_logger.LogWarning(
+                //    "API failure: {fullPath} Response: {apiResponse}, Trace: {trace}, User: {user}",
+                //  fullPath, (int) response.StatusCode, traceId, userName);        
 
                 throw new Exception("API call failed!");
             }
