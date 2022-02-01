@@ -11,6 +11,19 @@
     <PackageReference Include="IdentityModel" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+
+    <!-- App Insights -->
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+
+    <!-- Serilog / Seq -->
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />    
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.0.0" />
+
+    <!-- NLog / Splunk -->
+    <PackageReference Include="NLog" Version="4.7.13" />
+    <PackageReference Include="NLog.Targets.Splunk" Version="3.0.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
   </ItemGroup>
 
   <ItemGroup>
