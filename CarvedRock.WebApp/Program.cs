@@ -1,25 +1,25 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using CarvedRock.WebApp;
-using NLog;
-using NLog.Web;
-// using Serilog;
-// using Serilog.Exceptions;
+// using NLog;
+// using NLog.Web;
+using Serilog;
+using Serilog.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
-//builder.Logging.AddJsonConsole();
-//builder.Services.AddApplicationInsightsTelemetry();
+//builder.Logging.AddSimpleConsole();
+builder.Services.AddApplicationInsightsTelemetry();
 
-// builder.Host.UseSerilog((context, loggerConfig) => {
-//     loggerConfig
-//     .WriteTo.Console()
-//     .Enrich.WithExceptionDetails()
-//     .WriteTo.Seq("http://localhost:5341");
-// });
+builder.Host.UseSerilog((context, loggerConfig) => {
+    loggerConfig
+    .WriteTo.Console()
+    .Enrich.WithExceptionDetails()
+    .WriteTo.Seq("http://localhost:5341");
+});
 
-NLog.LogManager.Setup().LoadConfigurationFromFile();
-builder.Host.UseNLog();
+//NLog.LogManager.Setup().LoadConfigurationFromFile();
+//builder.Host.UseNLog();
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 builder.Services.AddAuthentication(options =>

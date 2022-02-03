@@ -7,26 +7,26 @@ using CarvedRock.Api;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using NLog;
-using NLog.Web;
-//using Serilog;
-//using Serilog.Exceptions;
+// using NLog;
+// using NLog.Web;
+using Serilog;
+using Serilog.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
-// builder.Logging.AddJsonConsole();
+//builder.Logging.AddSimpleConsole();
 // builder.Logging.AddDebug();
-//builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddApplicationInsightsTelemetry();
 
-// builder.Host.UseSerilog((context, loggerConfig) => {
-//     loggerConfig
-//     .WriteTo.Console()
-//     .Enrich.WithExceptionDetails()
-//     .WriteTo.Seq("http://localhost:5341");
-// });
+builder.Host.UseSerilog((context, loggerConfig) => {
+    loggerConfig
+    .WriteTo.Console()
+    .Enrich.WithExceptionDetails()
+    .WriteTo.Seq("http://localhost:5341");
+});
 
-NLog.LogManager.Setup().LoadConfigurationFromFile();
-builder.Host.UseNLog();
+//NLog.LogManager.Setup().LoadConfigurationFromFile();
+//builder.Host.UseNLog();
 
 builder.Services.AddProblemDetails(opts => 
 {
