@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 //builder.Logging.AddSimpleConsole();
 // builder.Logging.AddDebug();
-builder.Services.AddApplicationInsightsTelemetry();
+//builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Host.UseSerilog((context, loggerConfig) => {
     loggerConfig
