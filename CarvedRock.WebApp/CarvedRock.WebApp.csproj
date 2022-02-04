@@ -13,6 +13,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.1" />
 
+    <PackageReference Include="AspNetCore.HealthChecks.OpenIdConnectServer" Version="6.0.1" />
+
     <!-- App Insights -->
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />   
 

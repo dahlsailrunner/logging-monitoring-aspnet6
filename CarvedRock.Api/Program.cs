@@ -64,6 +64,9 @@ builder.Services.AddScoped<IProductLogic, ProductLogic>();
 builder.Services.AddDbContext<LocalContext>();
 builder.Services.AddScoped<ICarvedRockRepository, CarvedRockRepository>();
 
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<LocalContext>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -92,5 +95,7 @@ app.UseAuthentication();
 app.UseMiddleware<UserScopeMiddleware>();
 app.UseAuthorization();
 app.MapControllers().RequireAuthorization();
+
+app.MapHealthChecks("health").AllowAnonymous();
 
 app.Run();
