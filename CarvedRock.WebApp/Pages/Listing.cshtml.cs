@@ -17,7 +17,7 @@ namespace CarvedRock.WebApp.Pages
         {
             _logger = logger;
             _apiClient = apiClient;
-            _apiClient.BaseAddress = new Uri("https://localhost:7213/");
+            _apiClient.BaseAddress = new Uri("https://localhost:7213");
             _httpCtx = httpContextAccessor.HttpContext;
         }
 

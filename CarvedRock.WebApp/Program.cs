@@ -14,6 +14,7 @@ builder.Logging.ClearProviders();
 
 builder.Host.UseSerilog((context, loggerConfig) => {
     loggerConfig
+    .ReadFrom.Configuration(context.Configuration)
     .WriteTo.Console()
     .Enrich.WithExceptionDetails()
     .WriteTo.Seq("http://localhost:5341");
@@ -26,7 +27,7 @@ JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "oidc";
+    options.DefaultChallengeScheme = "oidc";    
 })
 .AddCookie("Cookies")
 .AddOpenIdConnect("oidc", options =>
@@ -44,7 +45,7 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new TokenValidationParameters
     {
         NameClaimType = "email"
-    };
+    };    
     options.SaveTokens = true;
 });
 builder.Services.AddHttpContextAccessor();
@@ -57,10 +58,11 @@ builder.Services.AddHttpClient();
 var app = builder.Build();
 
 app.UseExceptionHandler("/Error");
-// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-app.UseHsts();
 
-app.UseHttpsRedirection();
+// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//app.UseHsts();
+//app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();

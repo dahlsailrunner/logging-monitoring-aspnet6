@@ -20,6 +20,7 @@ builder.Logging.ClearProviders();
 
 builder.Host.UseSerilog((context, loggerConfig) => {
     loggerConfig
+    .ReadFrom.Configuration(context.Configuration)
     .WriteTo.Console()
     .Enrich.WithExceptionDetails()
     .WriteTo.Seq("http://localhost:5341");
@@ -90,7 +91,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 app.MapFallback(() => Results.Redirect("/swagger"));
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseMiddleware<UserScopeMiddleware>();
 app.UseAuthorization();
