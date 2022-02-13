@@ -20,7 +20,7 @@ namespace CarvedRock.Data
             _factoryLogger = loggerFactory.CreateLogger("DataAccessLayer");
         }
         public async Task<List<Product>> GetProductsAsync(string category)
-        {
+        {            
             _logger.LogInformation("Getting products in repository for {category}", category);
             if (category == "clothing")
             {

@@ -10,12 +10,18 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 // using NLog;
 // using NLog.Web;
 using Serilog;
+using Serilog.Enrichers.Span;
 using Serilog.Exceptions;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<LocalContext>();
+
 builder.Logging.ClearProviders();
-//builder.Logging.AddSimpleConsole();
 // builder.Logging.AddDebug();
+//builder.Logging.AddSimpleConsole();
 //builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Host.UseSerilog((context, loggerConfig) => {
@@ -23,7 +29,17 @@ builder.Host.UseSerilog((context, loggerConfig) => {
     .ReadFrom.Configuration(context.Configuration)
     .WriteTo.Console()
     .Enrich.WithExceptionDetails()
+    .Enrich.FromLogContext()
+    .Enrich.With<ActivityEnricher>()
     .WriteTo.Seq("http://localhost:5341");
+});
+
+builder.Services.AddOpenTelemetryTracing(b => {
+        b.SetResourceBuilder(
+            ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName)) 
+         .AddAspNetCoreInstrumentation()
+         .AddEntityFrameworkCoreInstrumentation()
+         .AddOtlpExporter(opts => { opts.Endpoint = new Uri("http://localhost:4317");  });
 });
 
 //NLog.LogManager.Setup().LoadConfigurationFromFile();
@@ -65,8 +81,7 @@ builder.Services.AddScoped<IProductLogic, ProductLogic>();
 builder.Services.AddDbContext<LocalContext>();
 builder.Services.AddScoped<ICarvedRockRepository, CarvedRockRepository>();
 
-builder.Services.AddHealthChecks()
-    .AddDbContextCheck<LocalContext>();
+
 
 var app = builder.Build();
 

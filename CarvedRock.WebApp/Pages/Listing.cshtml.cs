@@ -11,7 +11,7 @@ namespace CarvedRock.WebApp.Pages
         private readonly HttpClient _apiClient;
         private readonly ILogger<ListingModel> _logger;
         private readonly HttpContext? _httpCtx;
-
+        
         public ListingModel(HttpClient apiClient, ILogger<ListingModel> logger, 
                 IHttpContextAccessor httpContextAccessor)
         {
@@ -28,6 +28,7 @@ namespace CarvedRock.WebApp.Pages
         partial void LogApiFailure(string fullPath, int statusCode, string traceId);
         public async Task OnGetAsync()
         {
+           _logger.LogInformation("Making API call to get products...");
             var cat = Request.Query["cat"].ToString();
             if (string.IsNullOrEmpty(cat))
             {
