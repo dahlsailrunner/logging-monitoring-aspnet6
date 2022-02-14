@@ -13,26 +13,26 @@ using OpenTelemetry.Resources;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
-builder.Logging.AddJsonConsole();
+//builder.Logging.AddJsonConsole();
 //builder.Services.AddApplicationInsightsTelemetry();
 
-// builder.Host.UseSerilog((context, loggerConfig) => {
-//     loggerConfig
-//     .ReadFrom.Configuration(context.Configuration)
-//     .WriteTo.Console()
-//     .Enrich.WithExceptionDetails()
-//     .Enrich.FromLogContext()
-//     .Enrich.With<ActivityEnricher>()
-//     .WriteTo.Seq("http://localhost:5341");
-// });
+builder.Host.UseSerilog((context, loggerConfig) => {
+    loggerConfig
+    .ReadFrom.Configuration(context.Configuration)
+    .WriteTo.Console()
+    .Enrich.WithExceptionDetails()
+    .Enrich.FromLogContext()
+    .Enrich.With<ActivityEnricher>()
+    .WriteTo.Seq("http://localhost:5341");
+});
 
-// builder.Services.AddOpenTelemetryTracing(b => {
-//         b.SetResourceBuilder(
-//             ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName)) 
-//          .AddAspNetCoreInstrumentation()
-//          .AddHttpClientInstrumentation()         
-//          .AddOtlpExporter(opts => { opts.Endpoint = new Uri("http://localhost:4317"); });
-// });
+builder.Services.AddOpenTelemetryTracing(b => {
+        b.SetResourceBuilder(
+            ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName)) 
+         .AddAspNetCoreInstrumentation()
+         .AddHttpClientInstrumentation()         
+         .AddOtlpExporter(opts => { opts.Endpoint = new Uri("http://localhost:4317"); });
+});
 
 //NLog.LogManager.Setup().LoadConfigurationFromFile();
 //builder.Host.UseNLog();
