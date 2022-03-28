@@ -1,5 +1,26 @@
 # Logging and Monitoring in ASP.NET Core 6
 
+This is the repository with the code associated with this Pluralsight course: [https://app.pluralsight.com/library/courses/logging-monitoring-aspdotnet-core-6](https://app.pluralsight.com/library/courses/logging-monitoring-aspdotnet-core-6)
+
+The course (and this repo) demonstrates logging and monitoring within ASP.NET Core 6, including the following
+features:
+
+* Injection and use of the `ILogger<T>` interface
+* Default providers and configuration within ASP.NET Core 6
+* Log levels and their usage
+* Categories for log entries
+* Filtering log entries with both configuration and code
+* Exception Handling and logging
+* Scopes
+* Event Ids and how to use them
+* Techniques for hiding sensitive information
+* Semantic logging
+* Third party logging libraries (like Serilog and NLog)
+* Using third party libraries to write to various destinations (Splunk, Seq, Application Insights)
+* Using the `LoggerMessage` source generator
+* Health checks and things that monitor the health checks
+* Traceability with OpenTelemetry
+
 Repo URL: [https://github.com/dahlsailrunner/logging-monitoring-aspnet6](https://github.com/dahlsailrunner/logging-monitoring-aspnet6)
 
 ## VS Code Setup
