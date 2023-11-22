@@ -1,9 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using CarvedRock.Data;
 using CarvedRock.Domain;
-using Hellang.Middleware.ProblemDetails;
+//using Hellang.Middleware.ProblemDetails;
 using Microsoft.Data.Sqlite;
 using CarvedRock.Api;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -34,30 +35,43 @@ builder.Host.UseSerilog((context, loggerConfig) => {
     .WriteTo.Seq("http://localhost:5341");
 });
 
-builder.Services.AddOpenTelemetryTracing(b => {
-        b.SetResourceBuilder(
-            ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName)) 
-         .AddAspNetCoreInstrumentation()
-         .AddEntityFrameworkCoreInstrumentation()
-         .AddOtlpExporter(opts => { opts.Endpoint = new Uri("http://localhost:4317");  });
-});
+builder.Services.AddOpenTelemetry()
+    .WithTracing(b => {
+        b.ConfigureResource(r => r.AddService(builder.Environment.ApplicationName));
+        b.AddAspNetCoreInstrumentation();
+        b.AddEntityFrameworkCoreInstrumentation();
+        b.AddOtlpExporter(opts => { opts.Endpoint = new Uri("http://localhost:4317"); });
+    });
 
 //NLog.LogManager.Setup().LoadConfigurationFromFile();
 //builder.Host.UseNLog();
 
-builder.Services.AddProblemDetails(opts => 
-{
-    opts.IncludeExceptionDetails = (ctx, ex) => false;
-    
-    opts.OnBeforeWriteDetails = (ctx, dtls) => {
-        if (dtls.Status == 500)
+// https://bit.ly/aspnetcore-problemdetails
+builder.Services.AddProblemDetails(opts => // built-in problem details support
+    opts.CustomizeProblemDetails = (ctx) =>
+    {
+        // exception will hold the thrown exception
+        var exception = ctx.HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+        if (ctx.ProblemDetails.Status == 500)
         {
-            dtls.Detail = "An error occurred in our API. Use the trace id when contacting us.";
+            ctx.ProblemDetails.Detail = "An error occurred in our API. Use the trace id when contacting us.";
         }
-    }; 
-    opts.Rethrow<SqliteException>(); 
-    opts.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
-});
+    }
+);   
+
+//builder.Services.AddProblemDetails(opts => // hellang problem details support
+//{
+//    opts.IncludeExceptionDetails = (ctx, ex) => false;
+    
+//    opts.OnBeforeWriteDetails = (ctx, dtls) => {
+//        if (dtls.Status == 500)
+//        {
+//            dtls.Detail = "An error occurred in our API. Use the trace id when contacting us.";
+//        }
+//    }; 
+//    opts.Rethrow<SqliteException>(); 
+//    opts.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
+//});
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 builder.Services.AddAuthentication("Bearer")
@@ -81,8 +95,6 @@ builder.Services.AddScoped<IProductLogic, ProductLogic>();
 builder.Services.AddDbContext<LocalContext>();
 builder.Services.AddScoped<ICarvedRockRepository, CarvedRockRepository>();
 
-
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -91,9 +103,9 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<LocalContext>();
     context.MigrateAndCreateData();
 }
-
-app.UseMiddleware<CriticalExceptionMiddleware>();
-app.UseProblemDetails();
+app.UseExceptionHandler();  // built-in problem details support
+//app.UseMiddleware<CriticalExceptionMiddleware>();  // hellang problem details support
+//app.UseProblemDetails(); // hellang problem details support
 
 if (app.Environment.IsDevelopment())
 {

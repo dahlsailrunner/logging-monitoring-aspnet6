@@ -24,7 +24,8 @@ namespace CarvedRock.WebApp.Pages
         public List<Product> Products { get; set; } = new List<Product>();
         public string CategoryName { get; set; } = "";
 
-        [LoggerMessage(0, LogLevel.Warning, "API failure: {fullPath} Response: {statusCode}, Trace: {traceId}")]
+        //[LoggerMessage(0, LogLevel.Warning, "API failure: {fullPath} Response: {statusCode}, Trace: {traceId}")]
+        [LoggerMessage(LogLevel.Warning, "API failure: {fullPath} Response: {statusCode}, Trace: {traceId}")]
         partial void LogApiFailure(string fullPath, int statusCode, string traceId);
         public async Task OnGetAsync()
         {

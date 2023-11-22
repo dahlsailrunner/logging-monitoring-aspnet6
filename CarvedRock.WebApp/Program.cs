@@ -26,13 +26,13 @@ builder.Host.UseSerilog((context, loggerConfig) => {
     .WriteTo.Seq("http://localhost:5341");
 });
 
-builder.Services.AddOpenTelemetryTracing(b => {
-        b.SetResourceBuilder(
-            ResourceBuilder.CreateDefault().AddService(builder.Environment.ApplicationName)) 
-         .AddAspNetCoreInstrumentation()
-         .AddHttpClientInstrumentation()         
-         .AddOtlpExporter(opts => { opts.Endpoint = new Uri("http://localhost:4317"); });
-});
+builder.Services.AddOpenTelemetry()
+    .WithTracing(b => {
+        b.ConfigureResource(r => r.AddService(builder.Environment.ApplicationName));
+        b.AddAspNetCoreInstrumentation();
+        b.AddHttpClientInstrumentation();
+        b.AddOtlpExporter(opts => { opts.Endpoint = new Uri("http://localhost:4317"); });
+    });
 
 //NLog.LogManager.Setup().LoadConfigurationFromFile();
 //builder.Host.UseNLog();

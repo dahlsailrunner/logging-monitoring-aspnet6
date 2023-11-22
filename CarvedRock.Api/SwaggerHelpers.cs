@@ -35,8 +35,8 @@ public class SwaggerOptions : IConfigureOptions<SwaggerGenOptions>
                 {
                     AuthorizationCode = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl = new Uri(disco.AuthorizeEndpoint),
-                        TokenUrl = new Uri(disco.TokenEndpoint),
+                        AuthorizationUrl = new Uri(disco.AuthorizeEndpoint!),
+                        TokenUrl = new Uri(disco.TokenEndpoint!),
                         Scopes = oauthScopes
                     }
                 }
