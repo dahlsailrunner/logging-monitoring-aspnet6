@@ -1,4 +1,7 @@
-# Logging and Monitoring in ASP.NET Core 6
+# Logging and Monitoring in ASP.NET Core
+
+> [!TIP]
+> This branch has been updated for .NET 8, and uses new `ProblemDetails` functionality in the API and new `LoggerMessage` source generators.
 
 This is the repository with the code associated with this Pluralsight course: [https://app.pluralsight.com/library/courses/logging-monitoring-aspdotnet-core-6](https://app.pluralsight.com/library/courses/logging-monitoring-aspdotnet-core-6)
 
